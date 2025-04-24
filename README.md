@@ -3,7 +3,7 @@
 We implement a spatial binary regression model for area data, using a class of flexible link functions that include an extra shape parameter that can be adapted according to the degree of skewness present in the data. In the spatial part, we assign the **DAGAR model** (directed acyclic graph autoregressive) to the precision matrix $\Omega$ of spatial random effects. The provided codes were written in R and also in C++ to optimize computational efficiency through the R package `Rcpp`.
 
 ## Overview
-The implementations performed here derive from the results obtained from the doctoral dissertation, currently under finalization, of Alan S. Assunção, under the supervision of Ricardo S. Ehlers. We illustrate our application to a motivating dataset on periodontal disease and also include a simulation study to investigate the robustness of our methods. We follow a Bayesian approach to perform parameter estimation and model comparison.
+The implementations herein derive from the results obtained in the doctoral thesis, currently in the final stages, of Alan S. Assunção, under the supervision of Ricardo S. Ehlers. We illustrate our application to a simulation study to investigate the robustness of our methods. We follow a Bayesian approach to perform parameter estimation and model comparison.
 
 ## A Hierarchical Spatial Model
 
@@ -25,31 +25,17 @@ For each of the link functions adopted in this application, there are two files 
 Link | R file | Rcpp file
 ---  |---     |---
 Power Cauchy          | funcoes-cauchy-potencia-R.R         | hmcCpp-cauchy-potencia.cpp
-Reverse Power Cauchy  | funcoes-cauchy-reversa-potencia-R.R | hmcCpp-cauchy-reversa-potencia.cpp
-Power Logistic        | funcoes-logistica-potencia-R.R      | hmcCpp-logistica-potencia.cpp
-Reverse Power Logistic| funcoes-logistica-reversa-potencia-R.R |hmcCpp-logistica-reversa-potencia.cpp
-Power Reverse Gumbel  | funcoes-gumbel-reversa-potencia-R.R | hmcCpp-gumbel-reversa-potencia.cpp
-Reverse Power Reverse Gumbel | funcoes-gumbel-reversa-reversa-de-potencia-R.R | hmcCpp-gumbel-reversa-reversa-de-potencia.cpp
-Power Normal          | funcoes-normal-potencia-R.R         | hmcCpp-normal-potencia.cpp
-Reverse Power Normal  | funcoes-normal-reversa-potencia-R.R | hmcCpp-normal-reversa-potencia.cpp
-Logit                 | funcoes-logito-R.R                  | hmcCpp-logito.cpp
-Probit                | funcoes-probito-potencia-R.R        | hmcCpp-probito-potencia.cpp
-Cloglog               | funcoes-cloglog-potencia-R.R        | hmcCpp-cloglog-potencia.cpp
 
-Each `R` file above is composed of four functions:
+The `R` file above is composed of four functions:
 * `F` - implements the cumulative distribution function that gives rise to the respective link function
 * `lpostbetadelta` - implements the log-posteriori of the parameter vector $(\beta,\delta)$
 * `gradbetadelta` - implements the gradient of the parameter vector $(\beta,\delta)$ under the respective link function
 * `G` - Calculates the information matrix of the model under the specified link function
 
-Each file with `Rcpp` functions described in the table is composed of the first three functions described above, but "translated" to `Rcpp`, together with the following functions:
+The file with `Rcpp` functions described in the table is composed of the first three functions described above, but "translated" to `Rcpp`, together with the following functions:
 * `lpostphi` - implements the log-posteriori of the spatial random effects vector $\phi_i$ para $i=1,\ldots,n$
 * `gradphi` - implements the gradient of the spatial random effects vector $\phi_i$ para $i=1,\ldots,n$
 * `hmcCpp` - implements Hamiltonian Monte Carlo methods to sample the parameter vector $(\beta,\delta)$ and spatial random effects $\phi_i$ $i=1,\ldots,n$
-
-### Sampling from G-Wishart
-
-To sample values ​​from the G-Wishart distribution, we will use a function available in the package `R` `BDgraph` [Mohammadi, R., Massam, H., & Letac, G. (2021).](https://www.tandfonline.com/doi/full/10.1080/01621459.2021.1996377).
 
 ## Auxiliary functions
 The file **funcoes-auxiliares.R** contains two functions:
